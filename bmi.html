@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>BMI Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(145deg, #f1f5fc 0%, #dce5f0 100%);
+            padding: 1.5rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 2.5rem;
+            padding: 2.8rem 2.5rem;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 2.1rem;
+            letter-spacing: -0.5px;
+            color: #1a2639;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.2rem;
+        }
+
+        h1 span {
+            background: #7c4d8a;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.1rem 0.9rem;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+        }
+
+        .sub {
+            color: #4a5a72;
+            font-weight: 300;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid #7c4d8a;
+            padding-left: 0.9rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            margin-bottom: 1.2rem;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .input-group label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #1f3147;
+            letter-spacing: 0.2px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .input-group label small {
+            font-weight: 300;
+            color: #5d6f89;
+        }
+
+        .input-group input {
+            padding: 0.9rem 1.2rem;
+            border: 1.5px solid #d8e0ea;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 400;
+            background: white;
+            transition: 0.2s;
+            outline: none;
+            color: #121e30;
+            width: 100%;
+        }
+
+        .input-group input:focus {
+            border-color: #7c4d8a;
+            box-shadow: 0 0 0 4px rgba(124, 77, 138, 0.15);
+        }
+
+        .input-group input::placeholder {
+            color: #a8b6cc;
+            font-weight: 300;
+        }
+
+        .row-2 {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .row-2 .input-group {
+            flex: 1 1 40%;
+            min-width: 120px;
+        }
+
+        .calc-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #7c4d8a;
+            color: white;
+            border: none;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+            margin: 1.2rem 0 1.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 20px rgba(124, 77, 138, 0.3);
+        }
+
+        .calc-btn:hover {
+            background: #623d6e;
+            transform: scale(0.98);
+        }
+
+        .result-area {
+            background: #f3f0fa;
+            border-radius: 28px;
+            padding: 1.5rem 1.5rem 1.8rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .bmi-number {
+            font-size: 3.2rem;
+            font-weight: 700;
+            color: #1f1a2e;
+            line-height: 1.1;
+        }
+
+        .bmi-number small {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #5d4a72;
+        }
+
+        .bmi-category {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-top: 0.1rem;
+            letter-spacing: -0.2px;
+        }
+
+        .bmi-category span {
+            display: inline-block;
+            padding: 0.2rem 1.4rem;
+            border-radius: 40px;
+            background: rgba(124, 77, 138, 0.1);
+        }
+
+        .bmi-detail {
+            display: flex;
+            justify-content: center;
+            gap: 1.8rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #2d405b;
+            font-weight: 400;
+            flex-wrap: wrap;
+        }
+
+        .bmi-detail strong {
+            font-weight: 600;
+            color: #1a1130;
+        }
+
+        .error-msg {
+            color: #b13e4b;
+            font-size: 0.85rem;
+            font-weight: 400;
+            margin-top: 0.5rem;
+            padding-left: 0.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 2rem 1.2rem;
+            }
+            .row-2 {
+                flex-direction: column;
+                gap: 0;
+            }
+            .row-2 .input-group {
+                flex: 1 1 100%;
+                min-width: 0;
+            }
+            .bmi-number {
+                font-size: 2.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>
+        BMI
+        <span>calc</span>
+    </h1>
+    <div class="sub">Know your numbers · stay healthy</div>
+
+    <div class="row-2">
+        <div class="input-group">
+            <label>Weight <small>kg</small></label>
+            <input type="number" id="weight" placeholder="e.g. 72" step="0.1" min="0" />
+        </div>
+        <div class="input-group">
+            <label>Height <small>cm</small></label>
+            <input type="number" id="height" placeholder="e.g. 175" step="0.1" min="0" />
+        </div>
+    </div>
+
+    <button class="calc-btn" id="calcBtn">Calculate BMI</button>
+
+    <div class="result-area" id="resultArea">
+        <div class="bmi-number" id="bmiValue">— <small>kg/m²</small></div>
+        <div class="bmi-category" id="bmiCategory"><span>Ready</span></div>
+        <div class="bmi-detail">
+            <div>⚖️ <strong id="weightDisplay">—</strong></div>
+            <div>📏 <strong id="heightDisplay">—</strong></div>
+        </div>
+        <div id="errorMsg" class="error-msg"></div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const weightInput = document.getElementById('weight');
+        const heightInput = document.getElementById('height');
+        const calcBtn = document.getElementById('calcBtn');
+        const bmiValue = document.getElementById('bmiValue');
+        const bmiCategory = document.getElementById('bmiCategory');
+        const weightDisplay = document.getElementById('weightDisplay');
+        const heightDisplay = document.getElementById('heightDisplay');
+        const errorMsg = document.getElementById('errorMsg');
+
+        function clearResult() {
+            bmiValue.innerHTML = '— <small>kg/m²</small>';
+            bmiCategory.innerHTML = '<span>Ready</span>';
+            weightDisplay.textContent = '—';
+            heightDisplay.textContent = '—';
+            errorMsg.textContent = '';
+            bmiCategory.querySelector('span').style.background = 'rgba(124,77,138,0.1)';
+        }
+
+        function calculateBMI() {
+            errorMsg.textContent = '';
+
+            const weight = parseFloat(weightInput.value.trim());
+            const heightCm = parseFloat(heightInput.value.trim());
+
+            if (isNaN(weight) || weight <= 0) {
+                errorMsg.textContent = '⚠️ Please enter a valid weight (kg)';
+                return;
+            }
+            if (isNaN(heightCm) || heightCm <= 0) {
+                errorMsg.textContent = '⚠️ Please enter a valid height (cm)';
+                return;
+            }
+
+            const heightM = heightCm / 100;
+            const bmi = weight / (heightM * heightM);
+            const bmiRounded = Math.round(bmi * 10) / 10;
+
+            bmiValue.innerHTML = `${bmiRounded} <small>kg/m²</small>`;
+            weightDisplay.textContent = weight + ' kg';
+            heightDisplay.textContent = heightCm + ' cm';
+
+            let categoryText, bgColor;
+            if (bmiRounded < 18.5) {
+                categoryText = 'Underweight 🟡';
+                bgColor = 'rgba(237, 180, 50, 0.25)';
+            } else if (bmiRounded >= 18.5 && bmiRounded < 25) {
+                categoryText = 'Normal ✅';
+                bgColor = 'rgba(46, 160, 67, 0.2)';
+            } else if (bmiRounded >= 25 && bmiRounded < 30) {
+                categoryText = 'Overweight 🟠';
+                bgColor = 'rgba(230, 120, 30, 0.25)';
+            } else {
+                categoryText = 'Obese 🔴';
+                bgColor = 'rgba(200, 50, 50, 0.2)';
+            }
+
+            bmiCategory.innerHTML = `<span style="background:${bgColor};">${categoryText}</span>`;
+            errorMsg.textContent = '';
+        }
+
+        calcBtn.addEventListener('click', calculateBMI);
+
+        [weightInput, heightInput].forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    calculateBMI();
+                }
+            });
+            input.addEventListener('input', function() {
+                if (!bmiValue.textContent.includes('—')) {
+                    clearResult();
+                }
+            });
+        });
+
+        clearResult();
+    })();
+</script>
+
+</body>
+</html>
